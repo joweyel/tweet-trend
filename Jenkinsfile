@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Clone-code') {
             steps {
-                sh 'mvn clen deploy'
+                sh 'mvn clean deploy'
             }
         }
     }
