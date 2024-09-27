@@ -1,4 +1,4 @@
-def registry = 'https://jweyel01.jfrog.io'  // for jfrog
+def registry = 'https://joweyel01.jfrog.io'  // for jfrog
 
 pipeline {
     agent 
@@ -83,7 +83,7 @@ pipeline {
                     "files": [
                         {
                             "pattern": "jarstaging/(*)",
-                            "target": "libs-release-local/{1}",
+                            "target": "jweyel01-libs-release-local/{1}",
                             "flat": "false",
                             "props" : "${properties}",
                             "exclusions": [ "*.sha1", "*.md5"]
