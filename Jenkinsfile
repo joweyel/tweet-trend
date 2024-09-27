@@ -1,4 +1,6 @@
-def registry = 'https://joweyel01.jfrog.io'  // for jfrog
+def registry = 'https://joweyel01.jfrog.io'  // for saving artifacts to jfrog
+def imageName = 'joweyel01.jfrog.io/jweyel-docker-local/ttrend'
+def version = '2.1.2'
 
 pipeline {
     agent 
@@ -34,6 +36,7 @@ pipeline {
             }
         }
 
+        // Commented out due severe problems that are not yet
         // stage('SonarQube analysis') 
         // {
         //     environment 
@@ -96,6 +99,32 @@ pipeline {
                     echo '<--------------- Jar Publish Ended --------------->'  
                 }
             }   
-        }   
+        }
+
+        stage("Docker Build") 
+        {
+            steps 
+            {
+                script 
+                {
+                echo '<--------------- Docker Build Started --------------->'
+                app = docker.build(imageName+":"+version)
+                echo '<--------------- Docker Build Ends --------------->'
+                }
+            }
+        }
+        stage ("Docker Publish")
+        {
+            steps {
+                script {
+                    echo '<--------------- Docker Publish Started --------------->'  
+                    docker.withRegistry(registry, 'artifact-cred')
+                    {
+                        app.push()
+                    }    
+                    echo '<--------------- Docker Publish Ended --------------->'  
+                }
+            }
+        }
     }
 }
