@@ -1,7 +1,7 @@
 pipeline {
     agent {
         node {
-            label "maven"
+            label 'maven'
         }
     }
     environment {
@@ -12,6 +12,18 @@ pipeline {
         stage('Clone-code') {
             steps {
                 sh 'mvn clean deploy'
+            }
+        }
+        stage('SonarQube analysis') {
+            environment {
+                // configured in Dashboard -> Manage Jenkins -> Tools
+                scannerHome = tool 'jw-sonar-scanner'
+            }
+            steps {
+                // configured in Dashboard -> Manage Jenkins -> System
+                withSonarQubeEnv('jw-sonarqube-server') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
             }
         }
     }
