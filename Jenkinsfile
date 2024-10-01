@@ -1,6 +1,6 @@
 def registry = 'https://joweyel01.jfrog.io'  // for saving artifacts to jfrog
 def imageName = 'joweyel01.jfrog.io/jweyel-docker-local/ttrend'
-def version = '2.1.2'
+def version = '2.1.3'
 
 pipeline {
     agent 
