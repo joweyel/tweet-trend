@@ -126,5 +126,14 @@ pipeline {
                 }
             }
         }
+
+        // Kubernetes deployment
+        stage ("Deploy")
+        {
+            script
+            {
+                sh './deploy.sh' 
+            }
+        }
     }
 }
