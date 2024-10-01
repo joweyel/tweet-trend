@@ -113,7 +113,7 @@ pipeline {
                 }
             }
         }
-        stage ("Docker Publish")
+        stage("Docker Publish")
         {
             steps {
                 script {
@@ -126,9 +126,7 @@ pipeline {
                 }
             }
         }
-
-        // Kubernetes deployment
-        stage ("Deploy")
+        stage("Deploy")
         {
             script
             {
