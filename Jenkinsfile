@@ -128,9 +128,12 @@ pipeline {
         }
         stage("Deploy")
         {
-            script
+            steps 
             {
-                sh './deploy.sh' 
+                script
+                {
+                    sh './deploy.sh' 
+                }
             }
         }
     }
