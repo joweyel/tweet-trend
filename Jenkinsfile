@@ -13,6 +13,8 @@ pipeline {
     environment 
     {
         PATH = "/opt/apache-maven-3.9.9/bin:$PATH"
+        AWS_ACCESS_KEY_ID = credentials('aws_creds_tf_access_key')
+        AWS_SECRET_ACCESS_KEY = credentials('aws_creds_tf_secret_key')
         AWS_REGION = "us-east-1"
     }
 
@@ -128,22 +130,16 @@ pipeline {
                 }
             }
         }
-        stage("Setup AWS")
+        stage('Get cluster credentials') 
         {
             steps 
             {
-                script
+                script 
                 {
-                    echo '<--------------- Configuring AWS and Kubeconfig --------------->'
-                    withAWS(credentials: 'aws_creds_tf', region: "$AWS_REGION")
-                    {
-                        sh 'aws eks update-kubeconfig --name jw-eks-01'
-                    }
-                    echo '<------------------- AWS Configuration Done ------------------->'
+                    sh 'aws eks update-kubeconfig --region $AWS_REGION --name jw-eks-01'
                 }
             }
         }
-
         stage("Deploy")
         {
             steps 
