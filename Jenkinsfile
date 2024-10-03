@@ -13,6 +13,7 @@ pipeline {
     environment 
     {
         PATH = "/opt/apache-maven-3.9.9/bin:$PATH"
+        AWS_REGION = "us-east-1"
     }
 
     stages 
@@ -116,7 +117,8 @@ pipeline {
         stage("Docker Publish")
         {
             steps {
-                script {
+                script 
+                {
                     echo '<--------------- Docker Publish Started --------------->'  
                     docker.withRegistry(registry, 'artifact-cred')
                     {
@@ -126,6 +128,22 @@ pipeline {
                 }
             }
         }
+        stage("Setup AWS")
+        {
+            steps 
+            {
+                script
+                {
+                    echo '<--------------- Configuring AWS and Kubeconfig --------------->'
+                    withAWS(credentials: 'aws_creds_tf', region: "$AWS_REGION")
+                    {
+                        sh 'aws eks update-kubeconfig --name jw-eks-01'
+                    }
+                    echo '<------------------- AWS Configuration Done ------------------->'
+                }
+            }
+        }
+
         stage("Deploy")
         {
             steps 
